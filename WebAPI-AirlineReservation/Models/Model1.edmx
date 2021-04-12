@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AirLineDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AirLineDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cancellation">
           <Key>
             <PropertyRef Name="Cancellation_Id" />
@@ -224,8 +224,7 @@
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AirLineDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -456,10 +455,10 @@
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
           <FunctionImport Name="sp_BookedTickets" ReturnType="Collection(AirLineDatabaseModel.sp_BookedTickets_Result)">
-            <Parameter Name="uid" Mode="In" Type="Int32" />
+          <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CancelledTickets" ReturnType="Collection(AirLineDatabaseModel.sp_CancelledTickets_Result)">
-            <Parameter Name="uid" Mode="In" Type="Int32" />
+          <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_BookedTickets_Result">
@@ -493,10 +492,9 @@
           <Property Type="Int32" Name="Pnr_no" Nullable="false" />
           <Property Type="Int32" Name="User_Id" Nullable="false" />
           <Property Type="Int32" Name="Flight_Number" Nullable="false" />
+          <Property Type="String" Name="Flight_Name" Nullable="false" MaxLength="30" />
           <Property Type="DateTime" Name="Flight_Date" Nullable="false" />
           <Property Type="String" Name="Airport_Name" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="LastName" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Origin" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Destination" Nullable="false" MaxLength="30" />
           <Property Type="DateTime" Name="Dateofcancellation" Nullable="false" />
@@ -651,10 +649,9 @@
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
+                <ScalarProperty Name="Flight_Name" ColumnName="Flight_Name" />
                 <ScalarProperty Name="Flight_Date" ColumnName="Flight_Date" />
                 <ScalarProperty Name="Airport_Name" ColumnName="Airport_Name" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Origin" ColumnName="Origin" />
                 <ScalarProperty Name="Destination" ColumnName="Destination" />
                 <ScalarProperty Name="Dateofcancellation" ColumnName="Dateofcancellation" />

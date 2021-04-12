@@ -16,10 +16,9 @@ namespace WebAPI_AirlineReservation.Models
         public int Pnr_no { get; set; }
         public int User_Id { get; set; }
         public int Flight_Number { get; set; }
+        public string Flight_Name { get; set; }
         public System.DateTime Flight_Date { get; set; }
         public string Airport_Name { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
         public System.DateTime Dateofcancellation { get; set; }
