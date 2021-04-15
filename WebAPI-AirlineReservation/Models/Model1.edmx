@@ -187,6 +187,7 @@
         <Function Name="sp_CancelledTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="uid" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_pnrlatest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="AirLineDatabaseModelStoreContainer">
           <EntitySet Name="Cancellation" EntityType="Self.Cancellation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City_Information" EntityType="Self.City_Information" Schema="dbo" store:Type="Tables" />
@@ -460,6 +461,7 @@
           <FunctionImport Name="sp_CancelledTickets" ReturnType="Collection(AirLineDatabaseModel.sp_CancelledTickets_Result)">
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_pnrlatest" ReturnType="Collection(Int32)" />
         </EntityContainer>
         <ComplexType Name="sp_BookedTickets_Result">
           <Property Type="Int32" Name="User_Id" Nullable="false" />
@@ -666,6 +668,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_pnrlatest" FunctionName="AirLineDatabaseModel.Store.sp_pnrlatest" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

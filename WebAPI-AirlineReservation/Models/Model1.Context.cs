@@ -53,5 +53,10 @@ namespace WebAPI_AirlineReservation.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_CancelledTickets_Result>("sp_CancelledTickets", uidParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> sp_pnrlatest()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_pnrlatest");
+        }
     }
 }

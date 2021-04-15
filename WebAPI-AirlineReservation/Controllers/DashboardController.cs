@@ -193,6 +193,58 @@ namespace WebAPI_AirlineReservation.Controllers
             return false;
         }
 
+        [Route("api/Dashboard/PaymentCheck/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
+        [HttpGet]
+        public string Get(long Cardno, string cardtype, int Expiry_month, int Expiry_year)
+        {
+            string result = "";
+
+
+            try
+            {
+                var data = db.Payment_Details.Where(x => x.CardNo == Cardno && x.cardtype == cardtype && x.Expiry_Month == Expiry_month
+                && x.Expiry_year == Expiry_year);
+
+                if (data.Count() == 0)
+                {
+                    result = "New card added";
+
+                }
+                else
+                {
+                    result = "Payment Successful";
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        [Route("api/Dashboard/EnterPayment")]
+        [HttpPost]
+        public bool Post([FromBody] Payment_Details pd)
+        {
+            try
+            {
+                db.Payment_Details.Add(pd);
+                var res = db.SaveChanges();
+                if (res > 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return false;
+        }
+
 
     }
 }
