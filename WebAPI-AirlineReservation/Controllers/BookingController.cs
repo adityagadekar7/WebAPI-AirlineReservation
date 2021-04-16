@@ -15,6 +15,7 @@ namespace WebAPI_AirlineReservation.Controllers
     public class BookingController : ApiController
     {
         AirLineDatabaseEntities db = new AirLineDatabaseEntities();
+        
 
         //    [Route("api/Booking/InsertAll")]
         //    [HttpPost]
@@ -54,6 +55,7 @@ namespace WebAPI_AirlineReservation.Controllers
         {
             try
             {
+                
                 db.Flight_Reservation.Add(c);
                 var res = db.SaveChanges();
                 if (res > 0)
@@ -150,6 +152,7 @@ namespace WebAPI_AirlineReservation.Controllers
         [HttpPost]
         public bool Post([FromBody] Payment_Details pay)
         {
+            
             try
             {
                 db.Payment_Details.Add(pay);
@@ -165,5 +168,75 @@ namespace WebAPI_AirlineReservation.Controllers
             }
             return false;
         }
+
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+        //[Route("api/Booking/GetSeats")]
+        //[HttpGet]
+        //public string Get(int Flight_Number)
+        //{
+        //    //var data = db.Flight_Schedules.Where(x => x.Flight_Number==Flight_Number);
+        //    //var datax=data.Select(x=>x.Seats)
+        //    var seats = from fs in db.Flight_Schedules
+        //                   where fs.Flight_Number == Flight_Number
+        //                   select fs.Seats;
+        //    return seats;
+        //}
+        [Route("api/Booking/GetSeats/{Flight_Number}")]
+        [HttpGet]
+        public string Get(int Flight_Number)
+        {
+            try
+            {
+                var data = db.sp_GetSeatsByFlightNo(Flight_Number).FirstOrDefault();
+                //db.sp_GetSeatsByFlightNo.Flight_Number
+                if (data == null)
+                {
+                    throw new Exception("Invalid Flight Number");
+                }
+                else
+                {
+                    return data;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+
+
+        [Route("api/Booking/UpdateSeats/{Flight_Number}/{Seats}/{Pnr_no}")]
+        [HttpPost]
+        public bool Post(int Flight_Number,string Seats, int Pnr_no)
+        {
+            try
+            {
+                db.sp_UpdateSeats(Flight_Number,Seats);
+                var data = db.Flight_Reservation.Where(x => x.Pnr_no == Pnr_no).SingleOrDefault();
+                data.status = "Success";
+                var res=db.SaveChanges();
+                if (res > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+
+
+
     }
 }

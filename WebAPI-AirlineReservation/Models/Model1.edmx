@@ -40,6 +40,7 @@
           <Property Name="Classtype" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="total_price" Type="int" Nullable="false" />
           <Property Name="status" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Seats" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Flight_Schedules">
           <Key>
@@ -58,6 +59,7 @@
           <Property Name="Cost_Business" Type="int" Nullable="false" />
           <Property Name="Seats_Available_Eco" Type="int" Nullable="false" />
           <Property Name="Seats_Available_Business" Type="int" Nullable="false" />
+          <Property Name="Seats" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Passenger_Details">
           <Key>
@@ -187,7 +189,13 @@
         <Function Name="sp_CancelledTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="uid" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_pnrlatest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetSeatsByFlightNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Flight_Number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdateSeats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Flight_Number" Type="int" Mode="In" />
+          <Parameter Name="Seats" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="AirLineDatabaseModelStoreContainer">
           <EntitySet Name="Cancellation" EntityType="Self.Cancellation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City_Information" EntityType="Self.City_Information" Schema="dbo" store:Type="Tables" />
@@ -271,6 +279,7 @@
           <NavigationProperty Name="Flight_Schedules" Relationship="Self.FK__Flight_Re__Fligh__4CA06362" FromRole="Flight_Reservation" ToRole="Flight_Schedules" />
           <NavigationProperty Name="User_Registration" Relationship="Self.FK__Flight_Re__User___4D94879B" FromRole="Flight_Reservation" ToRole="User_Registration" />
           <NavigationProperty Name="Passenger_Details" Relationship="Self.FK__Passenger__Pnr_n__5165187F" FromRole="Flight_Reservation" ToRole="Passenger_Details" />
+          <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Flight_Schedules">
           <Key>
@@ -291,6 +300,7 @@
           <Property Name="Seats_Available_Business" Type="Int32" Nullable="false" />
           <NavigationProperty Name="City_Information" Relationship="Self.FK__Flight_Sc__Airpo__49C3F6B7" FromRole="Flight_Schedules" ToRole="City_Information" />
           <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__Fligh__4CA06362" FromRole="Flight_Schedules" ToRole="Flight_Reservation" />
+          <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Passenger_Details">
           <Key>
@@ -462,6 +472,13 @@
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_pnrlatest" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="sp_GetSeatsByFlightNo" ReturnType="Collection(String)">
+          <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdateSeats">
+            <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+            <Parameter Name="Seats" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_BookedTickets_Result">
           <Property Type="Int32" Name="User_Id" Nullable="false" />
@@ -509,6 +526,7 @@
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="total_price" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="ComplexType1" />
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -542,6 +560,7 @@
           <EntitySetMapping Name="Flight_Reservation">
             <EntityTypeMapping TypeName="AirLineDatabaseModel.Flight_Reservation">
               <MappingFragment StoreEntitySet="Flight_Reservation">
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
@@ -557,6 +576,7 @@
           <EntitySetMapping Name="Flight_Schedules">
             <EntityTypeMapping TypeName="AirLineDatabaseModel.Flight_Schedules">
               <MappingFragment StoreEntitySet="Flight_Schedules">
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
                 <ScalarProperty Name="Flight_Name" ColumnName="Flight_Name" />
                 <ScalarProperty Name="Flight_Date" ColumnName="Flight_Date" />
@@ -668,7 +688,8 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_pnrlatest" FunctionName="AirLineDatabaseModel.Store.sp_pnrlatest" />
+          <FunctionImportMapping FunctionImportName="sp_GetSeatsByFlightNo" FunctionName="AirLineDatabaseModel.Store.sp_GetSeatsByFlightNo" />
+          <FunctionImportMapping FunctionImportName="sp_UpdateSeats" FunctionName="AirLineDatabaseModel.Store.sp_UpdateSeats" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

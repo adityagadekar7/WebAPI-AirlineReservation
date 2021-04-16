@@ -29,6 +29,7 @@ namespace WebAPI_AirlineReservation.Models
         public string Classtype { get; set; }
         public int total_price { get; set; }
         public string status { get; set; }
+        public string Seats { get; set; }
     
         public virtual ICollection<Cancellation> Cancellations { get; set; }
         public virtual Flight_Schedules Flight_Schedules { get; set; }

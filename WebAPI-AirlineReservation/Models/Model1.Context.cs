@@ -58,5 +58,27 @@ namespace WebAPI_AirlineReservation.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_pnrlatest");
         }
+    
+        public virtual ObjectResult<string> sp_GetSeatsByFlightNo(Nullable<int> flight_Number)
+        {
+            var flight_NumberParameter = flight_Number.HasValue ?
+                new ObjectParameter("Flight_Number", flight_Number) :
+                new ObjectParameter("Flight_Number", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_GetSeatsByFlightNo", flight_NumberParameter);
+        }
+    
+        public virtual int sp_UpdateSeats(Nullable<int> flight_Number, string seats)
+        {
+            var flight_NumberParameter = flight_Number.HasValue ?
+                new ObjectParameter("Flight_Number", flight_Number) :
+                new ObjectParameter("Flight_Number", typeof(int));
+    
+            var seatsParameter = seats != null ?
+                new ObjectParameter("Seats", seats) :
+                new ObjectParameter("Seats", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateSeats", flight_NumberParameter, seatsParameter);
+        }
     }
 }

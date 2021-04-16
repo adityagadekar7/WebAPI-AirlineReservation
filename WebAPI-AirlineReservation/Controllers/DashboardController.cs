@@ -124,7 +124,7 @@ namespace WebAPI_AirlineReservation.Controllers
         }
 
 
-        ////Delet from Booked Table
+        ////Delete from Booked Table
         //[Route("api/Dashboard/DeleteFromBooked/{pnr}")]
         //[HttpDelete]
         //public bool Delete(int pnr)
@@ -243,6 +243,34 @@ namespace WebAPI_AirlineReservation.Controllers
                 throw ex;
             }
             return false;
+        }
+
+
+        [Route("api/Dashboard/UpdateCancelledSeats/{Flight_Number}/{Seats}")]
+        [HttpPost]
+        public bool Post(int Flight_Number, string Seats)
+        {
+            try
+            {
+                db.sp_UpdateSeats(Flight_Number, Seats);
+                var data = db.Flight_Schedules.Where(x => x.Flight_Number == Flight_Number).SingleOrDefault();
+                data.Seats = Seats;
+                var res = db.SaveChanges();
+                if (res > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
 

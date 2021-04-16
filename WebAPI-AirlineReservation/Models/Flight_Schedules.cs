@@ -32,6 +32,7 @@ namespace WebAPI_AirlineReservation.Models
         public int Cost_Business { get; set; }
         public int Seats_Available_Eco { get; set; }
         public int Seats_Available_Business { get; set; }
+        public string Seats { get; set; }
     
         public virtual City_Information City_Information { get; set; }
         public virtual ICollection<Flight_Reservation> Flight_Reservation { get; set; }
