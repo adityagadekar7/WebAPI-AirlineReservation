@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AirLineDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AirlineDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cancellation">
           <Key>
             <PropertyRef Name="Cancellation_Id" />
@@ -22,9 +22,8 @@
             <PropertyRef Name="Airport_Code" />
           </Key>
           <Property Name="Airport_Code" Type="int" Nullable="false" />
-          <Property Name="Airport_Name" Type="varchar" MaxLength="100" />
-          <Property Name="CityName" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="State" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Airport_Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Zip_Code" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Flight_Reservation">
@@ -67,7 +66,7 @@
           </Key>
           <Property Name="Passenger_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Pnr_no" Type="int" Nullable="false" />
-          <Property Name="PassportNumber" Type="int" Nullable="false" />
+          <Property Name="PassportNumber" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="DOB" Type="date" Nullable="false" />
@@ -95,11 +94,13 @@
           <Property Name="FirstName" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="EmailID" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DOB" Type="date" Nullable="false" />
           <Property Name="PhoneNumber" Type="bigint" Nullable="false" />
+          <Property Name="OTP" Type="nvarchar" MaxLength="40" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" />
         </EntityType>
-        <Association Name="FK__Cancellat__Pnr_n__571DF1D5">
+        <Association Name="FK__Cancellat__Pnr_n__3D5E1FD2">
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="1" />
           <End Role="Cancellation" Type="Self.Cancellation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -111,7 +112,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cancellat__User___5812160E">
+        <Association Name="FK__Cancellat__User___3E52440B">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Cancellation" Type="Self.Cancellation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -123,7 +124,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Re__Fligh__4CA06362">
+        <Association Name="FK__Flight_Re__Fligh__30F848ED">
           <End Role="Flight_Schedules" Type="Self.Flight_Schedules" Multiplicity="1" />
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -135,7 +136,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Re__User___4D94879B">
+        <Association Name="FK__Flight_Re__User___31EC6D26">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -147,7 +148,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Sc__Airpo__49C3F6B7">
+        <Association Name="FK__Flight_Sc__Airpo__2E1BDC42">
           <End Role="City_Information" Type="Self.City_Information" Multiplicity="1" />
           <End Role="Flight_Schedules" Type="Self.Flight_Schedules" Multiplicity="*" />
           <ReferentialConstraint>
@@ -159,7 +160,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Passenger__Pnr_n__5165187F">
+        <Association Name="FK__Passenger__Pnr_n__34C8D9D1">
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="1" />
           <End Role="Passenger_Details" Type="Self.Passenger_Details" Multiplicity="*" />
           <ReferentialConstraint>
@@ -171,7 +172,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment_D__User___5441852A">
+        <Association Name="FK__Payment_D__User___3A81B327">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Payment_Details" Type="Self.Payment_Details" Multiplicity="*" />
           <ReferentialConstraint>
@@ -189,14 +190,21 @@
         <Function Name="sp_CancelledTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="uid" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_DateCompare" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Flight_Number" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_GetSeatsByFlightNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Flight_Number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_UpdatePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="otp" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
         </Function>
         <Function Name="sp_UpdateSeats" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Flight_Number" Type="int" Mode="In" />
           <Parameter Name="Seats" Type="varchar" Mode="In" />
         </Function>
-        <EntityContainer Name="AirLineDatabaseModelStoreContainer">
+        <EntityContainer Name="AirlineDBModelStoreContainer">
           <EntitySet Name="Cancellation" EntityType="Self.Cancellation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City_Information" EntityType="Self.City_Information" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flight_Reservation" EntityType="Self.Flight_Reservation" Schema="dbo" store:Type="Tables" />
@@ -204,31 +212,31 @@
           <EntitySet Name="Passenger_Details" EntityType="Self.Passenger_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment_Details" EntityType="Self.Payment_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Registration" EntityType="Self.User_Registration" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Cancellat__Pnr_n__571DF1D5" Association="Self.FK__Cancellat__Pnr_n__571DF1D5">
+          <AssociationSet Name="FK__Cancellat__Pnr_n__3D5E1FD2" Association="Self.FK__Cancellat__Pnr_n__3D5E1FD2">
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Cancellation" EntitySet="Cancellation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cancellat__User___5812160E" Association="Self.FK__Cancellat__User___5812160E">
+          <AssociationSet Name="FK__Cancellat__User___3E52440B" Association="Self.FK__Cancellat__User___3E52440B">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Cancellation" EntitySet="Cancellation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Re__Fligh__4CA06362" Association="Self.FK__Flight_Re__Fligh__4CA06362">
+          <AssociationSet Name="FK__Flight_Re__Fligh__30F848ED" Association="Self.FK__Flight_Re__Fligh__30F848ED">
             <End Role="Flight_Schedules" EntitySet="Flight_Schedules" />
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Re__User___4D94879B" Association="Self.FK__Flight_Re__User___4D94879B">
+          <AssociationSet Name="FK__Flight_Re__User___31EC6D26" Association="Self.FK__Flight_Re__User___31EC6D26">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Sc__Airpo__49C3F6B7" Association="Self.FK__Flight_Sc__Airpo__49C3F6B7">
+          <AssociationSet Name="FK__Flight_Sc__Airpo__2E1BDC42" Association="Self.FK__Flight_Sc__Airpo__2E1BDC42">
             <End Role="City_Information" EntitySet="City_Information" />
             <End Role="Flight_Schedules" EntitySet="Flight_Schedules" />
           </AssociationSet>
-          <AssociationSet Name="FK__Passenger__Pnr_n__5165187F" Association="Self.FK__Passenger__Pnr_n__5165187F">
+          <AssociationSet Name="FK__Passenger__Pnr_n__34C8D9D1" Association="Self.FK__Passenger__Pnr_n__34C8D9D1">
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Passenger_Details" EntitySet="Passenger_Details" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment_D__User___5441852A" Association="Self.FK__Payment_D__User___5441852A">
+          <AssociationSet Name="FK__Payment_D__User___3A81B327" Association="Self.FK__Payment_D__User___3A81B327">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
@@ -236,7 +244,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AirLineDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AirlineDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Cancellation">
           <Key>
             <PropertyRef Name="Cancellation_Id" />
@@ -248,19 +256,18 @@
           <Property Name="timeofcancellation" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Refund_Amount" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Cancellat__Pnr_n__571DF1D5" FromRole="Cancellation" ToRole="Flight_Reservation" />
-          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Cancellat__User___5812160E" FromRole="Cancellation" ToRole="User_Registration" />
+          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Cancellat__Pnr_n__3D5E1FD2" FromRole="Cancellation" ToRole="Flight_Reservation" />
+          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Cancellat__User___3E52440B" FromRole="Cancellation" ToRole="User_Registration" />
         </EntityType>
         <EntityType Name="City_Information">
           <Key>
             <PropertyRef Name="Airport_Code" />
           </Key>
           <Property Name="Airport_Code" Type="Int32" Nullable="false" />
-          <Property Name="Airport_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CityName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Airport_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Zip_Code" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Flight_Schedules" Relationship="Self.FK__Flight_Sc__Airpo__49C3F6B7" FromRole="City_Information" ToRole="Flight_Schedules" />
+          <NavigationProperty Name="Flight_Schedules" Relationship="Self.FK__Flight_Sc__Airpo__2E1BDC42" FromRole="City_Information" ToRole="Flight_Schedules" />
         </EntityType>
         <EntityType Name="Flight_Reservation">
           <Key>
@@ -275,11 +282,11 @@
           <Property Name="Classtype" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="total_price" Type="Int32" Nullable="false" />
           <Property Name="status" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__Pnr_n__571DF1D5" FromRole="Flight_Reservation" ToRole="Cancellation" />
-          <NavigationProperty Name="Flight_Schedules" Relationship="Self.FK__Flight_Re__Fligh__4CA06362" FromRole="Flight_Reservation" ToRole="Flight_Schedules" />
-          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Flight_Re__User___4D94879B" FromRole="Flight_Reservation" ToRole="User_Registration" />
-          <NavigationProperty Name="Passenger_Details" Relationship="Self.FK__Passenger__Pnr_n__5165187F" FromRole="Flight_Reservation" ToRole="Passenger_Details" />
           <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__Pnr_n__3D5E1FD2" FromRole="Flight_Reservation" ToRole="Cancellation" />
+          <NavigationProperty Name="Flight_Schedules" Relationship="Self.FK__Flight_Re__Fligh__30F848ED" FromRole="Flight_Reservation" ToRole="Flight_Schedules" />
+          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Flight_Re__User___31EC6D26" FromRole="Flight_Reservation" ToRole="User_Registration" />
+          <NavigationProperty Name="Passenger_Details" Relationship="Self.FK__Passenger__Pnr_n__34C8D9D1" FromRole="Flight_Reservation" ToRole="Passenger_Details" />
         </EntityType>
         <EntityType Name="Flight_Schedules">
           <Key>
@@ -298,9 +305,9 @@
           <Property Name="Cost_Business" Type="Int32" Nullable="false" />
           <Property Name="Seats_Available_Eco" Type="Int32" Nullable="false" />
           <Property Name="Seats_Available_Business" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="City_Information" Relationship="Self.FK__Flight_Sc__Airpo__49C3F6B7" FromRole="Flight_Schedules" ToRole="City_Information" />
-          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__Fligh__4CA06362" FromRole="Flight_Schedules" ToRole="Flight_Reservation" />
           <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="City_Information" Relationship="Self.FK__Flight_Sc__Airpo__2E1BDC42" FromRole="Flight_Schedules" ToRole="City_Information" />
+          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__Fligh__30F848ED" FromRole="Flight_Schedules" ToRole="Flight_Reservation" />
         </EntityType>
         <EntityType Name="Passenger_Details">
           <Key>
@@ -308,14 +315,14 @@
           </Key>
           <Property Name="Passenger_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Pnr_no" Type="Int32" Nullable="false" />
-          <Property Name="PassportNumber" Type="Int32" Nullable="false" />
+          <Property Name="PassportNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Gender" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PhoneNumber" Type="Int64" Nullable="false" />
           <Property Name="CovidCertificate" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Passenger__Pnr_n__5165187F" FromRole="Passenger_Details" ToRole="Flight_Reservation" />
+          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Passenger__Pnr_n__34C8D9D1" FromRole="Passenger_Details" ToRole="Flight_Reservation" />
         </EntityType>
         <EntityType Name="Payment_Details">
           <Key>
@@ -327,7 +334,7 @@
           <Property Name="Expiry_Month" Type="Int32" Nullable="false" />
           <Property Name="Expiry_year" Type="Int32" Nullable="false" />
           <Property Name="Balance" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Payment_D__User___5441852A" FromRole="Payment_Details" ToRole="User_Registration" />
+          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Payment_D__User___3A81B327" FromRole="Payment_Details" ToRole="User_Registration" />
         </EntityType>
         <EntityType Name="User_Registration">
           <Key>
@@ -338,14 +345,16 @@
           <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EmailID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PhoneNumber" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__User___5812160E" FromRole="User_Registration" ToRole="Cancellation" />
-          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__User___4D94879B" FromRole="User_Registration" ToRole="Flight_Reservation" />
-          <NavigationProperty Name="Payment_Details" Relationship="Self.FK__Payment_D__User___5441852A" FromRole="User_Registration" ToRole="Payment_Details" />
+          <Property Name="OTP" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ActivationCode" Type="Guid" />
+          <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__User___3E52440B" FromRole="User_Registration" ToRole="Cancellation" />
+          <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__User___31EC6D26" FromRole="User_Registration" ToRole="Flight_Reservation" />
+          <NavigationProperty Name="Payment_Details" Relationship="Self.FK__Payment_D__User___3A81B327" FromRole="User_Registration" ToRole="Payment_Details" />
         </EntityType>
-        <Association Name="FK__Cancellat__Pnr_n__571DF1D5">
+        <Association Name="FK__Cancellat__Pnr_n__3D5E1FD2">
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="1" />
           <End Role="Cancellation" Type="Self.Cancellation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -357,7 +366,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cancellat__User___5812160E">
+        <Association Name="FK__Cancellat__User___3E52440B">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Cancellation" Type="Self.Cancellation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -369,7 +378,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Sc__Airpo__49C3F6B7">
+        <Association Name="FK__Flight_Sc__Airpo__2E1BDC42">
           <End Role="City_Information" Type="Self.City_Information" Multiplicity="1" />
           <End Role="Flight_Schedules" Type="Self.Flight_Schedules" Multiplicity="*" />
           <ReferentialConstraint>
@@ -381,7 +390,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Re__Fligh__4CA06362">
+        <Association Name="FK__Flight_Re__Fligh__30F848ED">
           <End Role="Flight_Schedules" Type="Self.Flight_Schedules" Multiplicity="1" />
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -393,7 +402,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight_Re__User___4D94879B">
+        <Association Name="FK__Flight_Re__User___31EC6D26">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="*" />
           <ReferentialConstraint>
@@ -405,7 +414,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Passenger__Pnr_n__5165187F">
+        <Association Name="FK__Passenger__Pnr_n__34C8D9D1">
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="1" />
           <End Role="Passenger_Details" Type="Self.Passenger_Details" Multiplicity="*" />
           <ReferentialConstraint>
@@ -417,7 +426,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment_D__User___5441852A">
+        <Association Name="FK__Payment_D__User___3A81B327">
           <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
           <End Role="Payment_Details" Type="Self.Payment_Details" Multiplicity="*" />
           <ReferentialConstraint>
@@ -429,7 +438,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AirLineDatabaseEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AirlineDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cancellations" EntityType="Self.Cancellation" />
           <EntitySet Name="City_Information" EntityType="Self.City_Information" />
           <EntitySet Name="Flight_Reservation" EntityType="Self.Flight_Reservation" />
@@ -437,54 +446,60 @@
           <EntitySet Name="Passenger_Details" EntityType="Self.Passenger_Details" />
           <EntitySet Name="Payment_Details" EntityType="Self.Payment_Details" />
           <EntitySet Name="User_Registration" EntityType="Self.User_Registration" />
-          <AssociationSet Name="FK__Cancellat__Pnr_n__571DF1D5" Association="Self.FK__Cancellat__Pnr_n__571DF1D5">
+          <AssociationSet Name="FK__Cancellat__Pnr_n__3D5E1FD2" Association="Self.FK__Cancellat__Pnr_n__3D5E1FD2">
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Cancellation" EntitySet="Cancellations" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cancellat__User___5812160E" Association="Self.FK__Cancellat__User___5812160E">
+          <AssociationSet Name="FK__Cancellat__User___3E52440B" Association="Self.FK__Cancellat__User___3E52440B">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Cancellation" EntitySet="Cancellations" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Sc__Airpo__49C3F6B7" Association="Self.FK__Flight_Sc__Airpo__49C3F6B7">
+          <AssociationSet Name="FK__Flight_Sc__Airpo__2E1BDC42" Association="Self.FK__Flight_Sc__Airpo__2E1BDC42">
             <End Role="City_Information" EntitySet="City_Information" />
             <End Role="Flight_Schedules" EntitySet="Flight_Schedules" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Re__Fligh__4CA06362" Association="Self.FK__Flight_Re__Fligh__4CA06362">
+          <AssociationSet Name="FK__Flight_Re__Fligh__30F848ED" Association="Self.FK__Flight_Re__Fligh__30F848ED">
             <End Role="Flight_Schedules" EntitySet="Flight_Schedules" />
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight_Re__User___4D94879B" Association="Self.FK__Flight_Re__User___4D94879B">
+          <AssociationSet Name="FK__Flight_Re__User___31EC6D26" Association="Self.FK__Flight_Re__User___31EC6D26">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
           </AssociationSet>
-          <AssociationSet Name="FK__Passenger__Pnr_n__5165187F" Association="Self.FK__Passenger__Pnr_n__5165187F">
+          <AssociationSet Name="FK__Passenger__Pnr_n__34C8D9D1" Association="Self.FK__Passenger__Pnr_n__34C8D9D1">
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Passenger_Details" EntitySet="Passenger_Details" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment_D__User___5441852A" Association="Self.FK__Payment_D__User___5441852A">
+          <AssociationSet Name="FK__Payment_D__User___3A81B327" Association="Self.FK__Payment_D__User___3A81B327">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
-          <FunctionImport Name="sp_BookedTickets" ReturnType="Collection(AirLineDatabaseModel.sp_BookedTickets_Result)">
+          <FunctionImport Name="sp_BookedTickets" ReturnType="Collection(AirlineDBModel.sp_BookedTickets_Result)">
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_CancelledTickets" ReturnType="Collection(AirLineDatabaseModel.sp_CancelledTickets_Result)">
+          <FunctionImport Name="sp_CancelledTickets" ReturnType="Collection(AirlineDBModel.sp_CancelledTickets_Result)">
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_pnrlatest" ReturnType="Collection(Int32)" />
           <FunctionImport Name="sp_GetSeatsByFlightNo" ReturnType="Collection(String)">
           <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_UpdatePassword">
+            <Parameter Name="otp" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_UpdateSeats">
             <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
             <Parameter Name="Seats" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_DateCompare" ReturnType="Collection(Int32)">
+            <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_BookedTickets_Result">
           <Property Type="Int32" Name="User_Id" Nullable="false" />
           <Property Type="Int32" Name="pnr_no" Nullable="false" />
-          <Property Type="String" Name="Airport_Name" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="State" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Airport_Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Location" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="Zip_Code" Nullable="false" />
           <Property Type="DateTime" Name="Flight_date" Nullable="false" />
           <Property Type="Int32" Name="Flight_Number" Nullable="false" />
@@ -500,7 +515,7 @@
           <Property Type="Int32" Name="Passenger_id" Nullable="false" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="30" />
-          <Property Type="Int32" Name="PassportNumber" Nullable="false" />
+          <Property Type="String" Name="PassportNumber" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="DOB" Nullable="false" />
           <Property Type="String" Name="Gender" Nullable="false" MaxLength="30" />
           <Property Type="Int64" Name="PhoneNumber" Nullable="false" />
@@ -513,7 +528,7 @@
           <Property Type="Int32" Name="Flight_Number" Nullable="false" />
           <Property Type="String" Name="Flight_Name" Nullable="false" MaxLength="30" />
           <Property Type="DateTime" Name="Flight_Date" Nullable="false" />
-          <Property Type="String" Name="Airport_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Airport_Name" Nullable="false" MaxLength="200" />
           <Property Type="String" Name="Origin" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Destination" Nullable="false" MaxLength="30" />
           <Property Type="DateTime" Name="Dateofcancellation" Nullable="false" />
@@ -526,15 +541,14 @@
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="total_price" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="ComplexType1" />
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AirLineDatabaseModelStoreContainer" CdmEntityContainer="AirLineDatabaseEntities">
+        <EntityContainerMapping StorageEntityContainer="AirlineDBModelStoreContainer" CdmEntityContainer="AirlineDBEntities">
           <EntitySetMapping Name="Cancellations">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.Cancellation">
+            <EntityTypeMapping TypeName="AirlineDBModel.Cancellation">
               <MappingFragment StoreEntitySet="Cancellation">
                 <ScalarProperty Name="Cancellation_Id" ColumnName="Cancellation_Id" />
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
@@ -547,20 +561,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="City_Information">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.City_Information">
+            <EntityTypeMapping TypeName="AirlineDBModel.City_Information">
               <MappingFragment StoreEntitySet="City_Information">
                 <ScalarProperty Name="Airport_Code" ColumnName="Airport_Code" />
                 <ScalarProperty Name="Airport_Name" ColumnName="Airport_Name" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Flight_Reservation">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.Flight_Reservation">
+            <EntityTypeMapping TypeName="AirlineDBModel.Flight_Reservation">
               <MappingFragment StoreEntitySet="Flight_Reservation">
-                <ScalarProperty Name="Seats" ColumnName="Seats" />
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
@@ -570,13 +582,13 @@
                 <ScalarProperty Name="Classtype" ColumnName="Classtype" />
                 <ScalarProperty Name="total_price" ColumnName="total_price" />
                 <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Flight_Schedules">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.Flight_Schedules">
+            <EntityTypeMapping TypeName="AirlineDBModel.Flight_Schedules">
               <MappingFragment StoreEntitySet="Flight_Schedules">
-                <ScalarProperty Name="Seats" ColumnName="Seats" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
                 <ScalarProperty Name="Flight_Name" ColumnName="Flight_Name" />
                 <ScalarProperty Name="Flight_Date" ColumnName="Flight_Date" />
@@ -590,11 +602,12 @@
                 <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
                 <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
                 <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Passenger_Details">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.Passenger_Details">
+            <EntityTypeMapping TypeName="AirlineDBModel.Passenger_Details">
               <MappingFragment StoreEntitySet="Passenger_Details">
                 <ScalarProperty Name="Passenger_id" ColumnName="Passenger_id" />
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
@@ -609,7 +622,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Payment_Details">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.Payment_Details">
+            <EntityTypeMapping TypeName="AirlineDBModel.Payment_Details">
               <MappingFragment StoreEntitySet="Payment_Details">
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="CardNo" ColumnName="CardNo" />
@@ -621,7 +634,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Registration">
-            <EntityTypeMapping TypeName="AirLineDatabaseModel.User_Registration">
+            <EntityTypeMapping TypeName="AirlineDBModel.User_Registration">
               <MappingFragment StoreEntitySet="User_Registration">
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -631,16 +644,18 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_BookedTickets" FunctionName="AirLineDatabaseModel.Store.sp_BookedTickets">
+          <FunctionImportMapping FunctionImportName="sp_BookedTickets" FunctionName="AirlineDBModel.Store.sp_BookedTickets">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="AirLineDatabaseModel.sp_BookedTickets_Result">
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_BookedTickets_Result">
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="pnr_no" ColumnName="pnr_no" />
                 <ScalarProperty Name="Airport_Name" ColumnName="Airport_Name" />
-                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Zip_Code" ColumnName="Zip_Code" />
                 <ScalarProperty Name="Flight_date" ColumnName="Flight_date" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
@@ -665,9 +680,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_CancelledTickets" FunctionName="AirLineDatabaseModel.Store.sp_CancelledTickets">
+          <FunctionImportMapping FunctionImportName="sp_CancelledTickets" FunctionName="AirlineDBModel.Store.sp_CancelledTickets">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="AirLineDatabaseModel.sp_CancelledTickets_Result">
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_CancelledTickets_Result">
                 <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
@@ -688,8 +703,10 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_GetSeatsByFlightNo" FunctionName="AirLineDatabaseModel.Store.sp_GetSeatsByFlightNo" />
-          <FunctionImportMapping FunctionImportName="sp_UpdateSeats" FunctionName="AirLineDatabaseModel.Store.sp_UpdateSeats" />
+          <FunctionImportMapping FunctionImportName="sp_GetSeatsByFlightNo" FunctionName="AirlineDBModel.Store.sp_GetSeatsByFlightNo" />
+          <FunctionImportMapping FunctionImportName="sp_UpdatePassword" FunctionName="AirlineDBModel.Store.sp_UpdatePassword" />
+          <FunctionImportMapping FunctionImportName="sp_UpdateSeats" FunctionName="AirlineDBModel.Store.sp_UpdateSeats" />
+          <FunctionImportMapping FunctionImportName="sp_DateCompare" FunctionName="AirlineDBModel.Store.sp_DateCompare" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

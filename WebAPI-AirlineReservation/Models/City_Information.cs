@@ -21,8 +21,7 @@ namespace WebAPI_AirlineReservation.Models
     
         public int Airport_Code { get; set; }
         public string Airport_Name { get; set; }
-        public string CityName { get; set; }
-        public string State { get; set; }
+        public string Location { get; set; }
         public int Zip_Code { get; set; }
     
         public virtual ICollection<Flight_Schedules> Flight_Schedules { get; set; }

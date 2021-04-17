@@ -14,7 +14,7 @@ namespace WebAPI_AirlineReservation.Controllers
     public class Flight_SchedulesController : ApiController
     {
 
-        AirLineDatabaseEntities db = new AirLineDatabaseEntities();
+        AirlineDBEntities db = new AirlineDBEntities();
 
         [Route("api/Flight_Schedules/InsertFlight")]
         [HttpPost]

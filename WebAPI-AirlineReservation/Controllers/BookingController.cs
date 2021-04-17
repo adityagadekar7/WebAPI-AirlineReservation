@@ -14,8 +14,8 @@ namespace WebAPI_AirlineReservation.Controllers
 
     public class BookingController : ApiController
     {
-        AirLineDatabaseEntities db = new AirLineDatabaseEntities();
-        
+        AirlineDBEntities db = new AirlineDBEntities();
+
 
         //    [Route("api/Booking/InsertAll")]
         //    [HttpPost]
@@ -48,6 +48,34 @@ namespace WebAPI_AirlineReservation.Controllers
         //        return ("Failed");
         //    }
 
+        //------------------------------------------------------------------------------------//
+
+        [Route("api/Booking/GetFlights/{Flight_Name}/{Flight_Date}/{Origin}/{Destination}/")]
+        [HttpGet]
+        public IEnumerable<Flight_Schedules> Get(string Flight_Name, DateTime Flight_Date, string Origin, string Destination)
+        {
+            //string result = "";
+            //try
+            //{
+
+            var data = db.Flight_Schedules.Where(x => x.Flight_Name == Flight_Name && x.Flight_Date == Flight_Date && x.Origin == Origin && x.Destination == Destination).ToList();
+            //if (data.Count() == 0)
+            //{
+            //result = "NO Flight for entered Parameters";
+            return data;
+            //}
+
+
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+            //return result;
+        }
+
+        //------------------------------------------------------------------------------------//
 
         [Route("api/Booking/InsertFlightReservation")]
         [HttpPost]
@@ -190,9 +218,10 @@ namespace WebAPI_AirlineReservation.Controllers
             {
                 var data = db.sp_GetSeatsByFlightNo(Flight_Number).FirstOrDefault();
                 //db.sp_GetSeatsByFlightNo.Flight_Number
-                if (data == null)
+                if (data == null) //When all seats are empty
                 {
-                    throw new Exception("Invalid Flight Number");
+                    //throw new Exception("Invalid Flight Number");
+                    return data;
                 }
                 else
                 {

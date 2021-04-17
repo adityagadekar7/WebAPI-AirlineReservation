@@ -29,6 +29,8 @@ namespace WebAPI_AirlineReservation.Models
         public string Password { get; set; }
         public System.DateTime DOB { get; set; }
         public long PhoneNumber { get; set; }
+        public string OTP { get; set; }
+        public Nullable<System.Guid> ActivationCode { get; set; }
     
         public virtual ICollection<Cancellation> Cancellations { get; set; }
         public virtual ICollection<Flight_Reservation> Flight_Reservation { get; set; }

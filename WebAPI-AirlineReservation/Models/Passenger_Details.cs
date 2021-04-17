@@ -16,7 +16,7 @@ namespace WebAPI_AirlineReservation.Models
     {
         public int Passenger_id { get; set; }
         public int Pnr_no { get; set; }
-        public int PassportNumber { get; set; }
+        public string PassportNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public System.DateTime DOB { get; set; }

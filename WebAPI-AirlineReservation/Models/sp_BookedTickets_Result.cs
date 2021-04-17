@@ -16,7 +16,7 @@ namespace WebAPI_AirlineReservation.Models
         public int User_Id { get; set; }
         public int pnr_no { get; set; }
         public string Airport_Name { get; set; }
-        public string State { get; set; }
+        public string Location { get; set; }
         public int Zip_Code { get; set; }
         public System.DateTime Flight_date { get; set; }
         public int Flight_Number { get; set; }
@@ -32,7 +32,7 @@ namespace WebAPI_AirlineReservation.Models
         public int Passenger_id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int PassportNumber { get; set; }
+        public string PassportNumber { get; set; }
         public System.DateTime DOB { get; set; }
         public string Gender { get; set; }
         public long PhoneNumber { get; set; }

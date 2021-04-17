@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WebAPI_AirlineReservation.Models;
 using System.Web.Http.Cors;
+using System.Globalization;
 //Controller for -- User Dashboard--Booked,Cancelled Tickets,payment related functions
 
 namespace WebAPI_AirlineReservation.Controllers
@@ -16,7 +17,7 @@ namespace WebAPI_AirlineReservation.Controllers
     public class DashboardController : ApiController
     {
 
-        AirLineDatabaseEntities db = new AirLineDatabaseEntities();
+        AirlineDBEntities db = new AirlineDBEntities();
 
         [Route("api/Dashboard/GetBookedTickets/{id}")]
         [HttpGet]
@@ -178,7 +179,7 @@ namespace WebAPI_AirlineReservation.Controllers
                 }
                 else
                 {
-                    olddata.status = fr.status;
+                    olddata.status = "Cancelled";
                     var res = db.SaveChanges();
                     if (res > 0)
                     {
@@ -191,6 +192,51 @@ namespace WebAPI_AirlineReservation.Controllers
                 throw ex;
             }
             return false;
+        }
+
+        [Route("api/Dashboard/GetFlightByFlightNumber/{Flight_Number}")]
+        [HttpGet]
+        public Flight_Schedules Get(int Flight_Number, int? test=121)
+        {
+            try
+            {
+                var data = db.Flight_Schedules.Where(x => x.Flight_Number == Flight_Number).SingleOrDefault();
+                return data;          
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }   
+        }
+
+        [Route("api/Dashboard/CompareTicketTime/{Flight_Number}")]
+        [HttpGet]
+        public int Get(int Flight_Number, int? test1=122, int? test2=1)
+        {
+            try
+            {
+                //test = "";
+                var data = db.Flight_Schedules.Where(x => x.Flight_Number == Flight_Number).FirstOrDefault();
+                var FlightDate = data.Flight_Date;
+                var FlightTime = data.Flight_Departing_Time;
+                var mergeFlight = FlightDate + FlightTime;
+                DateTime CurrentDateTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt"));
+                DateTime CurrentDateTimeAdded3 = CurrentDateTime.AddHours(3);
+                CultureInfo culture = new CultureInfo("en-US");
+                DateTime FlightDateTime = Convert.ToDateTime(mergeFlight, culture);
+                if (CurrentDateTimeAdded3 < FlightDateTime)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                } 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [Route("api/Dashboard/PaymentCheck/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]

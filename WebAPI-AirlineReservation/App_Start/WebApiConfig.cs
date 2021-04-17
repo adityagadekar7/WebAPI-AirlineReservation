@@ -18,6 +18,12 @@ namespace WebAPI_AirlineReservation
 
             // Web API routes
             config.EnableCors();
+
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+
+
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

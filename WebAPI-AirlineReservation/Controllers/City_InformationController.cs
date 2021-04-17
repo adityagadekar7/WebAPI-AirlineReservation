@@ -14,7 +14,7 @@ namespace WebAPI_AirlineReservation.Controllers
     public class City_InformationController : ApiController
     {
 
-        AirLineDatabaseEntities db = new AirLineDatabaseEntities();
+        AirlineDBEntities db = new AirlineDBEntities();
 
         [Route("api/City_Information/GetCity")]
         [HttpGet]

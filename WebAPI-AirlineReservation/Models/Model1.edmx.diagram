@@ -4,21 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="08849ac9d32148c2b931bb8d7a604525" Name="Diagram1">
-        <EntityTypeShape EntityType="AirLineDatabaseModel.Cancellation" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.City_Information" Width="1.5" PointX="1.5" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.Flight_Reservation" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.Flight_Schedules" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.Passenger_Details" Width="1.5" PointX="8.25" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.Payment_Details" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirLineDatabaseModel.User_Registration" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Cancellat__Pnr_n__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Cancellat__User___5812160E" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Flight_Sc__Airpo__49C3F6B7" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Flight_Re__Fligh__4CA06362" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Flight_Re__User___4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Passenger__Pnr_n__5165187F" ManuallyRouted="false" />
-        <AssociationConnector Association="AirLineDatabaseModel.FK__Payment_D__User___5441852A" ManuallyRouted="false" />
+      <Diagram DiagramId="d169b00f40a14a5790189aad7e001a3a" Name="Diagram1">
+        <EntityTypeShape EntityType="AirlineDBModel.Cancellation" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.City_Information" Width="1.5" PointX="1.5" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.Flight_Reservation" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.Flight_Schedules" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.Passenger_Details" Width="1.5" PointX="8.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.Payment_Details" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineDBModel.User_Registration" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <AssociationConnector Association="AirlineDBModel.FK__Cancellat__Pnr_n__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Cancellat__User___3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Flight_Sc__Airpo__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Flight_Re__Fligh__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Flight_Re__User___31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Passenger__Pnr_n__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Payment_D__User___3A81B327" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

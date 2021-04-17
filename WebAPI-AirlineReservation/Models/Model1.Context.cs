@@ -16,10 +16,10 @@ namespace WebAPI_AirlineReservation.Models
     using System.Data.Objects.DataClasses;
     using System.Linq;
     
-    public partial class AirLineDatabaseEntities : DbContext
+    public partial class AirlineDBEntities : DbContext
     {
-        public AirLineDatabaseEntities()
-            : base("name=AirLineDatabaseEntities")
+        public AirlineDBEntities()
+            : base("name=AirlineDBEntities")
         {
         }
     
@@ -54,11 +54,6 @@ namespace WebAPI_AirlineReservation.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_CancelledTickets_Result>("sp_CancelledTickets", uidParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> sp_pnrlatest()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_pnrlatest");
-        }
-    
         public virtual ObjectResult<string> sp_GetSeatsByFlightNo(Nullable<int> flight_Number)
         {
             var flight_NumberParameter = flight_Number.HasValue ?
@@ -66,6 +61,19 @@ namespace WebAPI_AirlineReservation.Models
                 new ObjectParameter("Flight_Number", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_GetSeatsByFlightNo", flight_NumberParameter);
+        }
+    
+        public virtual int sp_UpdatePassword(string otp, string password)
+        {
+            var otpParameter = otp != null ?
+                new ObjectParameter("otp", otp) :
+                new ObjectParameter("otp", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdatePassword", otpParameter, passwordParameter);
         }
     
         public virtual int sp_UpdateSeats(Nullable<int> flight_Number, string seats)
@@ -79,6 +87,15 @@ namespace WebAPI_AirlineReservation.Models
                 new ObjectParameter("Seats", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateSeats", flight_NumberParameter, seatsParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_DateCompare(Nullable<int> flight_Number)
+        {
+            var flight_NumberParameter = flight_Number.HasValue ?
+                new ObjectParameter("Flight_Number", flight_Number) :
+                new ObjectParameter("Flight_Number", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_DateCompare", flight_NumberParameter);
         }
     }
 }

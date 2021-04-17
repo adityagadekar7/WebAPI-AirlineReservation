@@ -13,7 +13,7 @@ namespace WebAPI_AirlineReservation.Controllers
     [Route("api/Passenger_Details")]
     public class Passenger_DetailsController : ApiController
     {
-        AirLineDatabaseEntities db = new AirLineDatabaseEntities();
+        AirlineDBEntities db = new AirlineDBEntities();
         //Insert Passenger Details
         [Route("api/Passenger_Details/InsertPassengerDetails")]
         [HttpPost]
