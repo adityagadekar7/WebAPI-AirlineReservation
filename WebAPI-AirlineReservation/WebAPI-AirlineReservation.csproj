@@ -114,6 +114,7 @@
     <Compile Include="Controllers\Flight_SchedulesController.cs" />
     <Compile Include="Controllers\Passenger_DetailsController.cs" />
     <Compile Include="Controllers\RegisterAUController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
