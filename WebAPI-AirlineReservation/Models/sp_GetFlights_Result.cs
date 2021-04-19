@@ -11,25 +11,21 @@ namespace WebAPI_AirlineReservation.Models
 {
     using System;
     
-    public partial class sp_BookedTickets_Result
+    public partial class sp_GetFlights_Result
     {
-        public int User_Id { get; set; }
-        public int pnr_no { get; set; }
-        public string Airport_Name { get; set; }
-        public string Location { get; set; }
-        public int Zip_Code { get; set; }
-        public System.DateTime Flight_date { get; set; }
         public int Flight_Number { get; set; }
-        public string origin { get; set; }
-        public string Destination { get; set; }
+        public string Flight_Name { get; set; }
+        public System.DateTime Flight_Date { get; set; }
+        public int Airport_Code { get; set; }
         public System.TimeSpan Flight_Departing_Time { get; set; }
         public System.TimeSpan Flight_Arrival_Time { get; set; }
-        public System.DateTime Reservation_Date { get; set; }
-        public System.TimeSpan Reservation_Time { get; set; }
-        public int num_of_Seats { get; set; }
-        public string Classtype { get; set; }
-        public int total_price { get; set; }
-        public string status { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public string Flight_Status { get; set; }
+        public int Cost_Eco { get; set; }
+        public int Cost_Business { get; set; }
+        public int Seats_Available_Eco { get; set; }
+        public int Seats_Available_Business { get; set; }
         public string Seats { get; set; }
     }
 }

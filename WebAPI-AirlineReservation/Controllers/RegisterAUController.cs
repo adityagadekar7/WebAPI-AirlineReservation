@@ -19,62 +19,18 @@ namespace WebAPI_AirlineReservation.Controllers
 
         AirlineDBEntities db = new AirlineDBEntities();
 
-        ////Login
-        //[Route("api/RegisterAU/Login/{UserId}/{pwd}")]
-        //[HttpGet]
-        //public string Get(int UserId, string pwd)
-        //{
-        //    string result = "";
-        //    try
-        //    {
-        //        var data = db.User_Registration.Where(x => x.User_Id == UserId && x.Password == pwd);
-        //        if (data.Count() == 0)
-        //            result = "Invalid Credentials";
-        //        else
-        //            result = "Login Successful";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return result;
-        //}
-
-
-
-        ////Register--Insert
-        //[Route("api/RegisterAU/InsertUser")]
-        //[HttpPost]
-        //public bool Post([FromBody] User_Registration ur)
-        //{
-        //    try
-        //    {
-        //        db.User_Registration.Add(ur);
-        //        var res = db.SaveChanges();
-        //        if (res > 0)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return false;
-        //}
-
-
+        
         //Login
-        [Route("api/RegisterAU/Login/{UserId}/{pwd}")]
+        [Route("api/RegisterAU/Login/{email}/{pwd}")]
         [HttpGet]
-        public string Get(int UserId, string pwd)
+        public string Get(string email, string pwd)
         {
             string result = "";
             try
             {
                 pwd = Convert.ToBase64String
                    (System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwd)));
-                var data = db.User_Registration.Where(x => x.User_Id == UserId && x.Password == pwd);
+                var data = db.User_Registration.Where(x => x.EmailID == email && x.Password == pwd);
                 if (data.Count() == 0)
                     result = "Invalid Credentials";
                 else
@@ -85,6 +41,22 @@ namespace WebAPI_AirlineReservation.Controllers
                 throw ex;
             }
             return result;
+        }
+
+        [Route("api/RegisterAU/GetIdByEmail/{email}")]
+        [HttpGet]
+        public IEnumerable<sp_GetIdByEmail_Result> Get(string email, long? test1=12)
+        {
+            try
+            {
+                var data = db.sp_GetIdByEmail(email).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
         [Route("api/RegisterAU/register")]
@@ -189,8 +161,8 @@ namespace WebAPI_AirlineReservation.Controllers
 
             var link = GenarateUserVerificationLink;
 
-            var fromMail = new MailAddress("projteam23@gmail.com", "santhoshsanta"); //enter your mail id
-            var fromEmailpassword = "8940754107"; // Set your email password
+            var fromMail = new MailAddress("airlinereser@gmail.com", "Aditya"); //enter your mail id
+            var fromEmailpassword = "8082012376"; // Set your email password
             var toEmail = new MailAddress(emailid);
 
             var smtp = new SmtpClient();

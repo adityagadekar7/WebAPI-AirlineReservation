@@ -145,8 +145,8 @@ namespace WebAPI_AirlineReservation.Controllers
 
             var link = GenarateUserVerificationLink;
 
-            var fromMail = new MailAddress("projteam23@gmail.com", "santhoshsanta"); //enter your mail id
-            var fromEmailpassword = "8940754107"; // Set your email password
+            var fromMail = new MailAddress("airlinereser@gmail.com", "Aditya"); //enter your mail id
+            var fromEmailpassword = "8082012376"; // Set your email password
             var toEmail = new MailAddress(emailid);
 
             var smtp = new SmtpClient();

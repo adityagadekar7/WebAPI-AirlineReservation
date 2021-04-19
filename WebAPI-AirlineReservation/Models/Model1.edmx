@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AirlineDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AirlineDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cancellation">
           <Key>
             <PropertyRef Name="Cancellation_Id" />
@@ -187,11 +187,27 @@
         <Function Name="sp_BookedTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="uid" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_BookingDetailsByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="uid" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_CancelledTickets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="uid" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_DateCompare" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Flight_Number" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_GetAllFlightDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_GetFlights" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Flight_Name" Type="varchar" Mode="In" />
+          <Parameter Name="Flight_Date" Type="varchar" Mode="In" />
+          <Parameter Name="Origin" Type="varchar" Mode="In" />
+          <Parameter Name="Destination" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetIdByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_GetPsgDetailsByPnr" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pnr" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_GetSeatsByFlightNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Flight_Number" Type="int" Mode="In" />
@@ -241,7 +257,8 @@
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AirlineDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -475,13 +492,32 @@
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
           <FunctionImport Name="sp_BookedTickets" ReturnType="Collection(AirlineDBModel.sp_BookedTickets_Result)">
-          <Parameter Name="uid" Mode="In" Type="Int32" />
+            <Parameter Name="uid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BookingDetailsByID" ReturnType="Collection(AirlineDBModel.sp_BookingDetailsByID_Result)">
+            <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_CancelledTickets" ReturnType="Collection(AirlineDBModel.sp_CancelledTickets_Result)">
-          <Parameter Name="uid" Mode="In" Type="Int32" />
+            <Parameter Name="uid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_DateCompare" ReturnType="Collection(Int32)">
+            <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetAllFlightDetails" ReturnType="Collection(AirlineDBModel.sp_GetAllFlightDetails_Result)" />
+          <FunctionImport Name="sp_GetFlights" ReturnType="Collection(AirlineDBModel.sp_GetFlights_Result)">
+            <Parameter Name="Flight_Name" Mode="In" Type="String" />
+            <Parameter Name="Flight_Date" Mode="In" Type="String" />
+            <Parameter Name="Origin" Mode="In" Type="String" />
+            <Parameter Name="Destination" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetIdByEmail" ReturnType="Collection(AirlineDBModel.sp_GetIdByEmail_Result)">
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetPsgDetailsByPnr" ReturnType="Collection(AirlineDBModel.sp_GetPsgDetailsByPnr_Result)">
+            <Parameter Name="pnr" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_GetSeatsByFlightNo" ReturnType="Collection(String)">
-          <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
+            <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="sp_UpdatePassword">
             <Parameter Name="otp" Mode="In" Type="String" />
@@ -490,9 +526,6 @@
           <FunctionImport Name="sp_UpdateSeats">
             <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
             <Parameter Name="Seats" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_DateCompare" ReturnType="Collection(Int32)">
-            <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_BookedTickets_Result">
@@ -512,15 +545,20 @@
           <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="total_price" Nullable="false" />
-          <Property Type="Int32" Name="Passenger_id" Nullable="false" />
-          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="LastName" Nullable="false" MaxLength="30" />
-          <Property Type="String" Name="PassportNumber" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="DOB" Nullable="false" />
-          <Property Type="String" Name="Gender" Nullable="false" MaxLength="30" />
-          <Property Type="Int64" Name="PhoneNumber" Nullable="false" />
-          <Property Type="String" Name="CovidCertificate" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="status" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
+        </ComplexType>
+        <ComplexType Name="sp_BookingDetailsByID_Result">
+          <Property Type="Int32" Name="Pnr_no" Nullable="false" />
+          <Property Type="Int32" Name="Flight_Number" Nullable="false" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Reservation_Date" Nullable="false" />
+          <Property Type="Time" Name="Reservation_Time" Nullable="false" />
+          <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
+          <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="total_price" Nullable="false" />
+          <Property Type="String" Name="status" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
         <ComplexType Name="sp_CancelledTickets_Result">
           <Property Type="Int32" Name="Pnr_no" Nullable="false" />
@@ -540,6 +578,61 @@
           <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="total_price" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_GetAllFlightDetails_Result">
+          <Property Type="Int32" Name="Flight_Number" Nullable="false" />
+          <Property Type="String" Name="Flight_Name" Nullable="false" MaxLength="30" />
+          <Property Type="DateTime" Name="Flight_Date" Nullable="false" />
+          <Property Type="Int32" Name="Airport_Code" Nullable="false" />
+          <Property Type="Time" Name="Flight_Departing_Time" Nullable="false" />
+          <Property Type="Time" Name="Flight_Arrival_Time" Nullable="false" />
+          <Property Type="String" Name="Origin" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Destination" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
+          <Property Type="Int32" Name="Cost_Business" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Business" Nullable="false" />
+          <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
+        </ComplexType>
+        <ComplexType Name="sp_GetFlights_Result">
+          <Property Type="Int32" Name="Flight_Number" Nullable="false" />
+          <Property Type="String" Name="Flight_Name" Nullable="false" MaxLength="30" />
+          <Property Type="DateTime" Name="Flight_Date" Nullable="false" />
+          <Property Type="Int32" Name="Airport_Code" Nullable="false" />
+          <Property Type="Time" Name="Flight_Departing_Time" Nullable="false" />
+          <Property Type="Time" Name="Flight_Arrival_Time" Nullable="false" />
+          <Property Type="String" Name="Origin" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Destination" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
+          <Property Type="Int32" Name="Cost_Business" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Business" Nullable="false" />
+          <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
+        </ComplexType>
+        <ComplexType Name="sp_GetIdByEmail_Result">
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="EmailID" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="DOB" Nullable="false" />
+          <Property Type="Int64" Name="PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="OTP" Nullable="true" MaxLength="40" />
+          <Property Type="Guid" Name="ActivationCode" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_GetPsgDetailsByPnr_Result">
+          <Property Type="Int32" Name="Passenger_id" Nullable="false" />
+          <Property Type="Int32" Name="Pnr_no" Nullable="false" />
+          <Property Type="String" Name="PassportNumber" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="30" />
+          <Property Type="DateTime" Name="DOB" Nullable="false" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="30" />
+          <Property Type="Int64" Name="PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="CovidCertificate" Nullable="false" MaxLength="30" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -668,15 +761,24 @@
                 <ScalarProperty Name="num_of_Seats" ColumnName="num_of_Seats" />
                 <ScalarProperty Name="Classtype" ColumnName="Classtype" />
                 <ScalarProperty Name="total_price" ColumnName="total_price" />
-                <ScalarProperty Name="Passenger_id" ColumnName="Passenger_id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="CovidCertificate" ColumnName="CovidCertificate" />
                 <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_BookingDetailsByID" FunctionName="AirlineDBModel.Store.sp_BookingDetailsByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_BookingDetailsByID_Result">
+                <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
+                <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Reservation_Date" ColumnName="Reservation_Date" />
+                <ScalarProperty Name="Reservation_Time" ColumnName="Reservation_Time" />
+                <ScalarProperty Name="num_of_Seats" ColumnName="num_of_Seats" />
+                <ScalarProperty Name="Classtype" ColumnName="Classtype" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -703,10 +805,81 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_DateCompare" FunctionName="AirlineDBModel.Store.sp_DateCompare" />
+          <FunctionImportMapping FunctionImportName="sp_GetAllFlightDetails" FunctionName="AirlineDBModel.Store.sp_GetAllFlightDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_GetAllFlightDetails_Result">
+                <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
+                <ScalarProperty Name="Flight_Name" ColumnName="Flight_Name" />
+                <ScalarProperty Name="Flight_Date" ColumnName="Flight_Date" />
+                <ScalarProperty Name="Airport_Code" ColumnName="Airport_Code" />
+                <ScalarProperty Name="Flight_Departing_Time" ColumnName="Flight_Departing_Time" />
+                <ScalarProperty Name="Flight_Arrival_Time" ColumnName="Flight_Arrival_Time" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Flight_Status" ColumnName="Flight_Status" />
+                <ScalarProperty Name="Cost_Eco" ColumnName="Cost_Eco" />
+                <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
+                <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
+                <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetFlights" FunctionName="AirlineDBModel.Store.sp_GetFlights">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_GetFlights_Result">
+                <ScalarProperty Name="Flight_Number" ColumnName="Flight_Number" />
+                <ScalarProperty Name="Flight_Name" ColumnName="Flight_Name" />
+                <ScalarProperty Name="Flight_Date" ColumnName="Flight_Date" />
+                <ScalarProperty Name="Airport_Code" ColumnName="Airport_Code" />
+                <ScalarProperty Name="Flight_Departing_Time" ColumnName="Flight_Departing_Time" />
+                <ScalarProperty Name="Flight_Arrival_Time" ColumnName="Flight_Arrival_Time" />
+                <ScalarProperty Name="Origin" ColumnName="Origin" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Flight_Status" ColumnName="Flight_Status" />
+                <ScalarProperty Name="Cost_Eco" ColumnName="Cost_Eco" />
+                <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
+                <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
+                <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetIdByEmail" FunctionName="AirlineDBModel.Store.sp_GetIdByEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_GetIdByEmail_Result">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetPsgDetailsByPnr" FunctionName="AirlineDBModel.Store.sp_GetPsgDetailsByPnr">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AirlineDBModel.sp_GetPsgDetailsByPnr_Result">
+                <ScalarProperty Name="Passenger_id" ColumnName="Passenger_id" />
+                <ScalarProperty Name="Pnr_no" ColumnName="Pnr_no" />
+                <ScalarProperty Name="PassportNumber" ColumnName="PassportNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CovidCertificate" ColumnName="CovidCertificate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_GetSeatsByFlightNo" FunctionName="AirlineDBModel.Store.sp_GetSeatsByFlightNo" />
           <FunctionImportMapping FunctionImportName="sp_UpdatePassword" FunctionName="AirlineDBModel.Store.sp_UpdatePassword" />
           <FunctionImportMapping FunctionImportName="sp_UpdateSeats" FunctionName="AirlineDBModel.Store.sp_UpdateSeats" />
-          <FunctionImportMapping FunctionImportName="sp_DateCompare" FunctionName="AirlineDBModel.Store.sp_DateCompare" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

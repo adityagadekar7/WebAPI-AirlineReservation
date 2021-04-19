@@ -22,7 +22,7 @@ namespace WebAPI_AirlineReservation.Controllers
         [Route("api/Dashboard/GetBookedTickets/{id}")]
         [HttpGet]
         public IEnumerable<sp_BookedTickets_Result> Get(int? id)
-        {
+            {
             try
             {
                 var res = db.sp_BookedTickets(id).ToList();
@@ -43,6 +43,58 @@ namespace WebAPI_AirlineReservation.Controllers
                 throw ex;
             }
         }
+        
+        [Route("api/Dashboard/GetPsgDetailsByPnr/{pnr}")]
+        [HttpGet]
+        public IEnumerable<sp_GetPsgDetailsByPnr_Result> Get(int pnr, float? ab=1)
+        {
+            try
+            {
+                var res = db.sp_GetPsgDetailsByPnr(pnr).ToList();
+                if (res == null)
+                {
+                    throw new Exception("NO Details");
+                }
+                else
+                {
+                    return db.sp_GetPsgDetailsByPnr(pnr).ToList();
+                }
+
+
+                //return db.ProjectInfoes.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        //[Route("api/Dashboard/GetBookedTickets/{id}")]
+        //[HttpGet]
+        //public IEnumerable<sp_BookingDetailsByID_Result> Get(int? id)
+        //{
+        //    try
+        //    {
+        //        //var res = db.sp_BookedTickets(id).ToList();
+        //        var FlightDetails = db.sp_BookingDetailsByID(id);
+        //        return FlightDetails;
+        //        //if (res == null)
+        //        //{
+        //        //    throw new Exception("NO Tickets booked");
+        //        //}
+        //        //else
+        //        //{
+        //        //    return db.sp_BookedTickets(id).ToList();
+        //        //}
+
+
+        //        //return db.ProjectInfoes.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
 
         [Route("api/Dashboard/GetCancelledTickets/{id}")]

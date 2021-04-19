@@ -37,6 +37,30 @@ namespace WebAPI_AirlineReservation.Controllers
         }
 
 
+        [Route("api/Flight_Schedules/GetAllFlights")]
+        [HttpGet]  //Get all flight Details
+        public IEnumerable<sp_GetAllFlightDetails_Result> Get()
+        {
+            try
+            {
+                var FlightDetails=db.sp_GetAllFlightDetails();
+                return FlightDetails;
+                //var details = db.Flight_Schedules;
+                //if (details == null)
+                //{
+                //    throw new Exception("Flight Details Empty");
+                //}
+                //else
+                //{
+                //return details;
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         [Route("api/Flight_Schedules/DeleteFlight/{id}")]
         [HttpDelete]  //delete
@@ -68,25 +92,7 @@ namespace WebAPI_AirlineReservation.Controllers
 
 
 
-        //[Route("api/Flight_Schedules/ShowAllFlights")] //GetAllEmployees is URI name(similar to method name)
-        //[HttpGet]
-        ////this method gives employee details
-        ////public IEnumerable<Employee> Get()
-        //public IEnumerable<Flight_Schedules> Get()
-        //{
-        //    try
-        //    {
-        //        var data = from e in db.Flight_Schedules
-        //                   join p in db.ProjectInfoes
-        //                   on e.projid equals p.projid
-        //                   select new EmpProjModel { EmpID = e.EmpID, EmpName = e.EmpName, Dept = e.Dept, Desg = e.Desg, Salary = e.Salary, projid = e.projid, password = e.password };
-        //        return data;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+
 
 
     }

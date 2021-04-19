@@ -45,6 +45,15 @@ namespace WebAPI_AirlineReservation.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BookedTickets_Result>("sp_BookedTickets", uidParameter);
         }
     
+        public virtual ObjectResult<sp_BookingDetailsByID_Result> sp_BookingDetailsByID(Nullable<int> uid)
+        {
+            var uidParameter = uid.HasValue ?
+                new ObjectParameter("uid", uid) :
+                new ObjectParameter("uid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BookingDetailsByID_Result>("sp_BookingDetailsByID", uidParameter);
+        }
+    
         public virtual ObjectResult<sp_CancelledTickets_Result> sp_CancelledTickets(Nullable<int> uid)
         {
             var uidParameter = uid.HasValue ?
@@ -52,6 +61,59 @@ namespace WebAPI_AirlineReservation.Models
                 new ObjectParameter("uid", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_CancelledTickets_Result>("sp_CancelledTickets", uidParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_DateCompare(Nullable<int> flight_Number)
+        {
+            var flight_NumberParameter = flight_Number.HasValue ?
+                new ObjectParameter("Flight_Number", flight_Number) :
+                new ObjectParameter("Flight_Number", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_DateCompare", flight_NumberParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetAllFlightDetails_Result> sp_GetAllFlightDetails()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetAllFlightDetails_Result>("sp_GetAllFlightDetails");
+        }
+    
+        public virtual ObjectResult<sp_GetFlights_Result> sp_GetFlights(string flight_Name, string flight_Date, string origin, string destination)
+        {
+            var flight_NameParameter = flight_Name != null ?
+                new ObjectParameter("Flight_Name", flight_Name) :
+                new ObjectParameter("Flight_Name", typeof(string));
+    
+            var flight_DateParameter = flight_Date != null ?
+                new ObjectParameter("Flight_Date", flight_Date) :
+                new ObjectParameter("Flight_Date", typeof(string));
+    
+            var originParameter = origin != null ?
+                new ObjectParameter("Origin", origin) :
+                new ObjectParameter("Origin", typeof(string));
+    
+            var destinationParameter = destination != null ?
+                new ObjectParameter("Destination", destination) :
+                new ObjectParameter("Destination", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetFlights_Result>("sp_GetFlights", flight_NameParameter, flight_DateParameter, originParameter, destinationParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetIdByEmail_Result> sp_GetIdByEmail(string email)
+        {
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetIdByEmail_Result>("sp_GetIdByEmail", emailParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetPsgDetailsByPnr_Result> sp_GetPsgDetailsByPnr(Nullable<int> pnr)
+        {
+            var pnrParameter = pnr.HasValue ?
+                new ObjectParameter("pnr", pnr) :
+                new ObjectParameter("pnr", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetPsgDetailsByPnr_Result>("sp_GetPsgDetailsByPnr", pnrParameter);
         }
     
         public virtual ObjectResult<string> sp_GetSeatsByFlightNo(Nullable<int> flight_Number)
@@ -87,15 +149,6 @@ namespace WebAPI_AirlineReservation.Models
                 new ObjectParameter("Seats", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_UpdateSeats", flight_NumberParameter, seatsParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> sp_DateCompare(Nullable<int> flight_Number)
-        {
-            var flight_NumberParameter = flight_Number.HasValue ?
-                new ObjectParameter("Flight_Number", flight_Number) :
-                new ObjectParameter("Flight_Number", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_DateCompare", flight_NumberParameter);
         }
     }
 }
