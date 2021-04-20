@@ -75,6 +75,29 @@ namespace WebAPI_AirlineReservation.Controllers
             //return result;
         }
 
+
+        [Route("api/Booking/GetFlights1/{Flight_Name}/{Flight_Date}/{Origin}/{Destination}/")]
+        [HttpGet]
+        public IEnumerable<sp_GetFlights_Result> Get(string Flight_Name, string Flight_Date, string Origin, string Destination)
+        {
+            //string result = "";
+            //try
+            //{
+
+            var data = db.sp_GetFlights(Flight_Name, Flight_Date, Origin, Destination).ToList();
+            //if (data.Count() == 0)
+            //{
+            //result = "NO Flight for entered Parameters";
+            return data;
+            //}
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+            //return result;
+        }
+
         //------------------------------------------------------------------------------------//
 
         [Route("api/Booking/InsertFlightReservation")]
