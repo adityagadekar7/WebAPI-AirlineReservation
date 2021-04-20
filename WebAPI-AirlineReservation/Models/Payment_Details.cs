@@ -14,12 +14,12 @@ namespace WebAPI_AirlineReservation.Models
     
     public partial class Payment_Details
     {
-        public int User_Id { get; set; }
+        public Nullable<int> User_Id { get; set; }
         public long CardNo { get; set; }
         public string cardtype { get; set; }
         public int Expiry_Month { get; set; }
         public int Expiry_year { get; set; }
-        public int Balance { get; set; }
+        public Nullable<long> Balance { get; set; }
     
         public virtual User_Registration User_Registration { get; set; }
     }

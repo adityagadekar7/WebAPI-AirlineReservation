@@ -27,7 +27,7 @@ namespace WebAPI_AirlineReservation.Models
         public System.TimeSpan Reservation_Time { get; set; }
         public int num_of_Seats { get; set; }
         public string Classtype { get; set; }
-        public int total_price { get; set; }
+        public Nullable<int> total_price { get; set; }
         public string status { get; set; }
         public string Seats { get; set; }
     

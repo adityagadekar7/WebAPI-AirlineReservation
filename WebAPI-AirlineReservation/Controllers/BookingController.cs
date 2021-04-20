@@ -129,56 +129,7 @@ namespace WebAPI_AirlineReservation.Controllers
             return data;
         }
 
-        //[Route("api/Booking/GetLatestPnr")]
-        //[HttpGet]
-        //public IEnumerable<sp_latestpnr_Result> Get()
-        //{
-        //    try
-        //    {
-        //        //var res = db.sp_latestpnr().ToList();
-        //        return db.sp_latestpnr().ToList();
-        //        //return db.ProjectInfoes.ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        //[Route("api/Booking/GetPnrById/{id}")]
-        //[HttpGet]
-        ////this method gives employee details based on some condition(id)
-        //public  Flight_Res Get(int id)
-        //{
-        //    try
-        //    {
-        //        var data = db.Flight_Reservation.Where(x => x.User_Id == id).ToList();
-        //        //var data1= 
-        //        //           from fr in db.Flight_Reservation
-        //        //           select top 1  from 
-
-
-
-
-        //        //var res = db.Flight_Reservation(pnr).ToList();
-        //        if (data == null)
-        //        {
-        //            throw new Exception("Invalid Id");
-        //        }
-        //        else
-        //        {
-        //            return data;
-        //        }
-
-
-        //        //return db.ProjectInfoes.ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
+        
         [Route("api/Booking/InsertPassengerDetails")]
         [HttpPost]
         public bool Post([FromBody] Passenger_Details psg)

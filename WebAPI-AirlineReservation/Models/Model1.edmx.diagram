@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cac1ec415eda49b8819fc669c6b873bc" Name="Diagram1">
+      <Diagram DiagramId="4ac4da8895a0413e945724d165ece493" Name="Diagram1">
         <EntityTypeShape EntityType="AirlineDBModel.Cancellation" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AirlineDBModel.City_Information" Width="1.5" PointX="1.5" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AirlineDBModel.Flight_Reservation" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
@@ -18,7 +18,7 @@
         <AssociationConnector Association="AirlineDBModel.FK__Flight_Re__Fligh__30F848ED" ManuallyRouted="false" />
         <AssociationConnector Association="AirlineDBModel.FK__Flight_Re__User___31EC6D26" ManuallyRouted="false" />
         <AssociationConnector Association="AirlineDBModel.FK__Passenger__Pnr_n__34C8D9D1" ManuallyRouted="false" />
-        <AssociationConnector Association="AirlineDBModel.FK__Payment_D__User___3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineDBModel.FK__Payment_D__User___619B8048" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

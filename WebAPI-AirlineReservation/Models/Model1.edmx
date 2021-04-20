@@ -37,7 +37,7 @@
           <Property Name="Reservation_Time" Type="time" Precision="7" Nullable="false" />
           <Property Name="num_of_Seats" Type="int" Nullable="false" />
           <Property Name="Classtype" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="total_price" Type="int" Nullable="false" />
+          <Property Name="total_price" Type="int" />
           <Property Name="status" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Seats" Type="varchar" MaxLength="8000" />
         </EntityType>
@@ -56,8 +56,8 @@
           <Property Name="Flight_Status" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Cost_Eco" Type="int" Nullable="false" />
           <Property Name="Cost_Business" Type="int" Nullable="false" />
-          <Property Name="Seats_Available_Eco" Type="int" Nullable="false" />
-          <Property Name="Seats_Available_Business" Type="int" Nullable="false" />
+          <Property Name="Seats_Available_Eco" Type="int" />
+          <Property Name="Seats_Available_Business" Type="int" />
           <Property Name="Seats" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Passenger_Details">
@@ -78,12 +78,12 @@
           <Key>
             <PropertyRef Name="CardNo" />
           </Key>
-          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="User_Id" Type="int" />
           <Property Name="CardNo" Type="bigint" Nullable="false" />
           <Property Name="cardtype" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Expiry_Month" Type="int" Nullable="false" />
           <Property Name="Expiry_year" Type="int" Nullable="false" />
-          <Property Name="Balance" Type="int" Nullable="false" />
+          <Property Name="Balance" Type="bigint" />
         </EntityType>
         <EntityType Name="User_Registration">
           <Key>
@@ -172,8 +172,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment_D__User___3A81B327">
-          <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
+        <Association Name="FK__Payment_D__User___619B8048">
+          <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="0..1" />
           <End Role="Payment_Details" Type="Self.Payment_Details" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User_Registration">
@@ -252,7 +252,7 @@
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Passenger_Details" EntitySet="Passenger_Details" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment_D__User___3A81B327" Association="Self.FK__Payment_D__User___3A81B327">
+          <AssociationSet Name="FK__Payment_D__User___619B8048" Association="Self.FK__Payment_D__User___619B8048">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
@@ -297,7 +297,7 @@
           <Property Name="Reservation_Time" Type="Time" Nullable="false" Precision="7" />
           <Property Name="num_of_Seats" Type="Int32" Nullable="false" />
           <Property Name="Classtype" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="total_price" Type="Int32" Nullable="false" />
+          <Property Name="total_price" Type="Int32" />
           <Property Name="status" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__Pnr_n__3D5E1FD2" FromRole="Flight_Reservation" ToRole="Cancellation" />
@@ -320,8 +320,8 @@
           <Property Name="Flight_Status" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Cost_Eco" Type="Int32" Nullable="false" />
           <Property Name="Cost_Business" Type="Int32" Nullable="false" />
-          <Property Name="Seats_Available_Eco" Type="Int32" Nullable="false" />
-          <Property Name="Seats_Available_Business" Type="Int32" Nullable="false" />
+          <Property Name="Seats_Available_Eco" Type="Int32" />
+          <Property Name="Seats_Available_Business" Type="Int32" />
           <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="City_Information" Relationship="Self.FK__Flight_Sc__Airpo__2E1BDC42" FromRole="Flight_Schedules" ToRole="City_Information" />
           <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__Fligh__30F848ED" FromRole="Flight_Schedules" ToRole="Flight_Reservation" />
@@ -345,13 +345,13 @@
           <Key>
             <PropertyRef Name="CardNo" />
           </Key>
-          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" />
           <Property Name="CardNo" Type="Int64" Nullable="false" />
           <Property Name="cardtype" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Expiry_Month" Type="Int32" Nullable="false" />
           <Property Name="Expiry_year" Type="Int32" Nullable="false" />
-          <Property Name="Balance" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Payment_D__User___3A81B327" FromRole="Payment_Details" ToRole="User_Registration" />
+          <Property Name="Balance" Type="Int64" />
+          <NavigationProperty Name="User_Registration" Relationship="Self.FK__Payment_D__User___619B8048" FromRole="Payment_Details" ToRole="User_Registration" />
         </EntityType>
         <EntityType Name="User_Registration">
           <Key>
@@ -369,7 +369,7 @@
           <Property Name="ActivationCode" Type="Guid" />
           <NavigationProperty Name="Cancellations" Relationship="Self.FK__Cancellat__User___3E52440B" FromRole="User_Registration" ToRole="Cancellation" />
           <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__User___31EC6D26" FromRole="User_Registration" ToRole="Flight_Reservation" />
-          <NavigationProperty Name="Payment_Details" Relationship="Self.FK__Payment_D__User___3A81B327" FromRole="User_Registration" ToRole="Payment_Details" />
+          <NavigationProperty Name="Payment_Details" Relationship="Self.FK__Payment_D__User___619B8048" FromRole="User_Registration" ToRole="Payment_Details" />
         </EntityType>
         <Association Name="FK__Cancellat__Pnr_n__3D5E1FD2">
           <End Role="Flight_Reservation" Type="Self.Flight_Reservation" Multiplicity="1" />
@@ -443,8 +443,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Payment_D__User___3A81B327">
-          <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="1" />
+        <Association Name="FK__Payment_D__User___619B8048">
+          <End Role="User_Registration" Type="Self.User_Registration" Multiplicity="0..1" />
           <End Role="Payment_Details" Type="Self.Payment_Details" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User_Registration">
@@ -487,7 +487,7 @@
             <End Role="Flight_Reservation" EntitySet="Flight_Reservation" />
             <End Role="Passenger_Details" EntitySet="Passenger_Details" />
           </AssociationSet>
-          <AssociationSet Name="FK__Payment_D__User___3A81B327" Association="Self.FK__Payment_D__User___3A81B327">
+          <AssociationSet Name="FK__Payment_D__User___619B8048" Association="Self.FK__Payment_D__User___619B8048">
             <End Role="User_Registration" EntitySet="User_Registration" />
             <End Role="Payment_Details" EntitySet="Payment_Details" />
           </AssociationSet>
@@ -544,7 +544,7 @@
           <Property Type="Time" Name="Reservation_Time" Nullable="false" />
           <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
-          <Property Type="Int32" Name="total_price" Nullable="false" />
+          <Property Type="Int32" Name="total_price" Nullable="true" />
           <Property Type="String" Name="status" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
@@ -556,7 +556,7 @@
           <Property Type="Time" Name="Reservation_Time" Nullable="false" />
           <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
-          <Property Type="Int32" Name="total_price" Nullable="false" />
+          <Property Type="Int32" Name="total_price" Nullable="true" />
           <Property Type="String" Name="status" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
@@ -577,7 +577,7 @@
           <Property Type="Time" Name="Reservation_Time" Nullable="false" />
           <Property Type="Int32" Name="num_of_Seats" Nullable="false" />
           <Property Type="String" Name="Classtype" Nullable="false" MaxLength="30" />
-          <Property Type="Int32" Name="total_price" Nullable="false" />
+          <Property Type="Int32" Name="total_price" Nullable="true" />
         </ComplexType>
         <ComplexType Name="sp_GetAllFlightDetails_Result">
           <Property Type="Int32" Name="Flight_Number" Nullable="false" />
@@ -591,8 +591,8 @@
           <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
           <Property Type="Int32" Name="Cost_Business" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Business" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="true" />
+          <Property Type="Int32" Name="Seats_Available_Business" Nullable="true" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
         <ComplexType Name="sp_GetFlights_Result">
@@ -607,8 +607,8 @@
           <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
           <Property Type="Int32" Name="Cost_Business" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Business" Nullable="false" />
+          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="true" />
+          <Property Type="Int32" Name="Seats_Available_Business" Nullable="true" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
         <ComplexType Name="sp_GetIdByEmail_Result">

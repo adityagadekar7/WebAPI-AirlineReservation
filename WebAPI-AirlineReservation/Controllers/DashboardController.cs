@@ -129,7 +129,7 @@ namespace WebAPI_AirlineReservation.Controllers
         [Route("api/Dashboard/GetBookedTicketByPnr/{pnr}")]
         [HttpGet]
         //this method gives employee details based on some condition(id)
-        public Flight_Reservation Get(int pnr,int test=50000)
+        public Flight_Reservation Get(int pnr,int? test=50000)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace WebAPI_AirlineReservation.Controllers
 
         [Route("api/Dashboard/GetFlightByFlightNumber/{Flight_Number}")]
         [HttpGet]
-        public Flight_Schedules Get(int Flight_Number, int? test=121)
+        public Flight_Schedules Get(int Flight_Number, long? test=121)
         {
             try
             {
@@ -291,18 +291,49 @@ namespace WebAPI_AirlineReservation.Controllers
             }
         }
 
-        [Route("api/Dashboard/PaymentCheck/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
+        //[Route("api/Dashboard/PaymentCheck/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
+        //[HttpGet]
+        //public string Get(long Cardno, string cardtype, int Expiry_month, int Expiry_year)
+        //{
+        //    string result = "";
+
+
+        //    try
+        //    {
+        //        var data = db.Payment_Details.Where(x => x.CardNo == Cardno && x.cardtype == cardtype && x.Expiry_Month == Expiry_month
+        //        && x.Expiry_year == Expiry_year);
+
+        //        if (data.Count() == 0)
+        //        {
+        //            result = "New card added";
+
+        //        }
+        //        else
+        //        {
+        //            result = "Payment Successful";
+
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    return result;
+        //}
+
+        [Route("api/Dashboard/PaymentCheck/{UserId}/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
         [HttpGet]
-        public string Get(long Cardno, string cardtype, int Expiry_month, int Expiry_year)
+        public string Get(int UserId, long Cardno, string cardtype, int Expiry_month, int Expiry_year)
         {
             string result = "";
 
 
             try
             {
-                var data = db.Payment_Details.Where(x => x.CardNo == Cardno && x.cardtype == cardtype && x.Expiry_Month == Expiry_month
+                var data = db.Payment_Details.Where(x => x.User_Id == UserId && x.CardNo == Cardno && x.cardtype == cardtype && x.Expiry_Month == Expiry_month
                 && x.Expiry_year == Expiry_year);
-
                 if (data.Count() == 0)
                 {
                     result = "New card added";
@@ -323,13 +354,57 @@ namespace WebAPI_AirlineReservation.Controllers
             return result;
         }
 
-        [Route("api/Dashboard/EnterPayment")]
+        //[Route("api/Dashboard/EnterPayment")]
+        //[HttpPost]
+        //public bool Post([FromBody] Payment_Details pd)
+        //{
+        //    try
+        //    {
+        //        db.Payment_Details.Add(pd);
+        //        var res = db.SaveChanges();
+        //        if (res > 0)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    return false;
+        //}
+
+        [Route("api/Dashboard/EnterPayment/{uid}")]
         [HttpPost]
-        public bool Post([FromBody] Payment_Details pd)
+        public bool Post(int uid,[FromBody] Payment_Details pd)
         {
             try
             {
+                pd.User_Id = uid;
                 db.Payment_Details.Add(pd);
+                var res = db.SaveChanges();
+                if (res > 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return false;
+        }
+
+
+        [Route("api/Dashboard/AlterBalance/{Cardno}/{Balance}")]
+        [HttpPut]
+        public bool Put(long Cardno, long Balance )
+        {
+            try
+            {
+                
+                var details=db.Payment_Details.Where(x=>x.CardNo==Cardno).SingleOrDefault();
+                details.Balance -= Balance;
                 var res = db.SaveChanges();
                 if (res > 0)
                 {
@@ -370,6 +445,8 @@ namespace WebAPI_AirlineReservation.Controllers
             }
 
         }
+
+
 
 
     }
