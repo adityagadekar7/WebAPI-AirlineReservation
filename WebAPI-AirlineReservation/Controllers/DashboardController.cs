@@ -69,33 +69,6 @@ namespace WebAPI_AirlineReservation.Controllers
             }
         }
 
-        //[Route("api/Dashboard/GetBookedTickets/{id}")]
-        //[HttpGet]
-        //public IEnumerable<sp_BookingDetailsByID_Result> Get(int? id)
-        //{
-        //    try
-        //    {
-        //        //var res = db.sp_BookedTickets(id).ToList();
-        //        var FlightDetails = db.sp_BookingDetailsByID(id);
-        //        return FlightDetails;
-        //        //if (res == null)
-        //        //{
-        //        //    throw new Exception("NO Tickets booked");
-        //        //}
-        //        //else
-        //        //{
-        //        //    return db.sp_BookedTickets(id).ToList();
-        //        //}
-
-
-        //        //return db.ProjectInfoes.ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
 
         [Route("api/Dashboard/GetCancelledTickets/{id}")]
         [HttpGet]
@@ -177,47 +150,6 @@ namespace WebAPI_AirlineReservation.Controllers
         }
 
 
-        ////Delete from Booked Table
-        //[Route("api/Dashboard/DeleteFromBooked/{pnr}")]
-        //[HttpDelete]
-        //public bool Delete(int pnr)
-        //{
-        //    try
-        //    {
-        //        var delFlightRes = db.Flight_Reservation.Where(x => x.Pnr_no == pnr).SingleOrDefault();
-        //        //var delFlightRes = db.Flight_Reservation.Count(db.Flight_Reservation.Where(x => x.Pnr_no == pnr));
-        //        //PassengerDetailsModel pd=
-        //        //var psgdet=db.Passenger_Details.Where(x => x.Pnr_no == pnr).FirstOrDefault();
-        //        if (delFlightRes == null)
-        //        {
-        //            throw new Exception("Ticket Number cannot be null");
-        //        }
-        //        else
-        //        {
-        //            //var delpsg = db.Passenger_Details.Find(pnr);
-        //            //foreach(var x in db.Passenger_Details)
-        //            //{
-        //            //    var z = db.Passenger_Details.Where(y => y.Pnr_no == pnr);
-        //            //    db.Passenger_Details.Remove(z);
-        //            //}
-        //            //db.Passenger_Details.Remove(delpsg);
-        //            db.Flight_Reservation.Remove(delFlightRes);
-        //            //db.Passenger_Details.Remove(db.Passenger_Details.Where(x => x.Pnr_no == pnr).SingleOrDefault());
-        //            var res = db.SaveChanges();
-        //            if (res > 0)
-        //            {
-        //                return true;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return false;
-        //}
-
-
         [Route("api/Dashboard/UpdateBookedTickets/{pnr}")]
         [HttpPut] //Update
         public bool Put(int pnr,[FromBody] Flight_Reservation fr)
@@ -291,38 +223,7 @@ namespace WebAPI_AirlineReservation.Controllers
             }
         }
 
-        //[Route("api/Dashboard/PaymentCheck/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
-        //[HttpGet]
-        //public string Get(long Cardno, string cardtype, int Expiry_month, int Expiry_year)
-        //{
-        //    string result = "";
-
-
-        //    try
-        //    {
-        //        var data = db.Payment_Details.Where(x => x.CardNo == Cardno && x.cardtype == cardtype && x.Expiry_Month == Expiry_month
-        //        && x.Expiry_year == Expiry_year);
-
-        //        if (data.Count() == 0)
-        //        {
-        //            result = "New card added";
-
-        //        }
-        //        else
-        //        {
-        //            result = "Payment Successful";
-
-        //        }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return result;
-        //}
-
+        //Payment Part
         [Route("api/Dashboard/PaymentCheck/{UserId}/{CardNo}/{cardtype}/{Expiry_month}/{Expiry_year}")]
         [HttpGet]
         public string Get(int UserId, long Cardno, string cardtype, int Expiry_month, int Expiry_year)
@@ -353,26 +254,6 @@ namespace WebAPI_AirlineReservation.Controllers
             }
             return result;
         }
-
-        //[Route("api/Dashboard/EnterPayment")]
-        //[HttpPost]
-        //public bool Post([FromBody] Payment_Details pd)
-        //{
-        //    try
-        //    {
-        //        db.Payment_Details.Add(pd);
-        //        var res = db.SaveChanges();
-        //        if (res > 0)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return false;
-        //}
 
         [Route("api/Dashboard/EnterPayment/{uid}")]
         [HttpPost]

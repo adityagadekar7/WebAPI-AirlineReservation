@@ -13,7 +13,7 @@ namespace WebAPI_AirlineReservation.Controllers
     [Route("api/Flight_Schedules")]
     public class Flight_SchedulesController : ApiController
     {
-
+        
         AirlineDBEntities db = new AirlineDBEntities();
 
         [Route("api/Flight_Schedules/InsertFlight")]

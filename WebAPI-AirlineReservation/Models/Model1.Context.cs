@@ -125,6 +125,35 @@ namespace WebAPI_AirlineReservation.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("sp_GetSeatsByFlightNo", flight_NumberParameter);
         }
     
+        public virtual int sp_InsertCardDetails(Nullable<int> userId, Nullable<long> cardNo, string cardtype, Nullable<int> expiry_Month, Nullable<int> expiry_year, Nullable<long> balance)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            var cardNoParameter = cardNo.HasValue ?
+                new ObjectParameter("CardNo", cardNo) :
+                new ObjectParameter("CardNo", typeof(long));
+    
+            var cardtypeParameter = cardtype != null ?
+                new ObjectParameter("cardtype", cardtype) :
+                new ObjectParameter("cardtype", typeof(string));
+    
+            var expiry_MonthParameter = expiry_Month.HasValue ?
+                new ObjectParameter("Expiry_Month", expiry_Month) :
+                new ObjectParameter("Expiry_Month", typeof(int));
+    
+            var expiry_yearParameter = expiry_year.HasValue ?
+                new ObjectParameter("Expiry_year", expiry_year) :
+                new ObjectParameter("Expiry_year", typeof(int));
+    
+            var balanceParameter = balance.HasValue ?
+                new ObjectParameter("Balance", balance) :
+                new ObjectParameter("Balance", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_InsertCardDetails", userIdParameter, cardNoParameter, cardtypeParameter, expiry_MonthParameter, expiry_yearParameter, balanceParameter);
+        }
+    
         public virtual int sp_UpdatePassword(string otp, string password)
         {
             var otpParameter = otp != null ?

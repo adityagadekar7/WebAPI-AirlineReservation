@@ -30,8 +30,6 @@ namespace WebAPI_AirlineReservation.Models
         public string Flight_Status { get; set; }
         public int Cost_Eco { get; set; }
         public int Cost_Business { get; set; }
-        public Nullable<int> Seats_Available_Eco { get; set; }
-        public Nullable<int> Seats_Available_Business { get; set; }
         public string Seats { get; set; }
     
         public virtual City_Information City_Information { get; set; }

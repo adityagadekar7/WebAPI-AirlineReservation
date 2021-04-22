@@ -56,8 +56,6 @@
           <Property Name="Flight_Status" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Cost_Eco" Type="int" Nullable="false" />
           <Property Name="Cost_Business" Type="int" Nullable="false" />
-          <Property Name="Seats_Available_Eco" Type="int" />
-          <Property Name="Seats_Available_Business" Type="int" />
           <Property Name="Seats" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Passenger_Details">
@@ -212,6 +210,14 @@
         <Function Name="sp_GetSeatsByFlightNo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Flight_Number" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_InsertCardDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="CardNo" Type="bigint" Mode="In" />
+          <Parameter Name="cardtype" Type="varchar" Mode="In" />
+          <Parameter Name="Expiry_Month" Type="int" Mode="In" />
+          <Parameter Name="Expiry_year" Type="int" Mode="In" />
+          <Parameter Name="Balance" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="sp_UpdatePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="otp" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="varchar" Mode="In" />
@@ -320,8 +326,6 @@
           <Property Name="Flight_Status" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Cost_Eco" Type="Int32" Nullable="false" />
           <Property Name="Cost_Business" Type="Int32" Nullable="false" />
-          <Property Name="Seats_Available_Eco" Type="Int32" />
-          <Property Name="Seats_Available_Business" Type="Int32" />
           <Property Name="Seats" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="City_Information" Relationship="Self.FK__Flight_Sc__Airpo__2E1BDC42" FromRole="Flight_Schedules" ToRole="City_Information" />
           <NavigationProperty Name="Flight_Reservation" Relationship="Self.FK__Flight_Re__Fligh__30F848ED" FromRole="Flight_Schedules" ToRole="Flight_Reservation" />
@@ -519,6 +523,14 @@
           <FunctionImport Name="sp_GetSeatsByFlightNo" ReturnType="Collection(String)">
             <Parameter Name="Flight_Number" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_InsertCardDetails">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="CardNo" Mode="In" Type="Int64" />
+            <Parameter Name="cardtype" Mode="In" Type="String" />
+            <Parameter Name="Expiry_Month" Mode="In" Type="Int32" />
+            <Parameter Name="Expiry_year" Mode="In" Type="Int32" />
+            <Parameter Name="Balance" Mode="In" Type="Int64" />
+          </FunctionImport>
           <FunctionImport Name="sp_UpdatePassword">
             <Parameter Name="otp" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
@@ -591,8 +603,6 @@
           <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
           <Property Type="Int32" Name="Cost_Business" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="true" />
-          <Property Type="Int32" Name="Seats_Available_Business" Nullable="true" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
         <ComplexType Name="sp_GetFlights_Result">
@@ -607,8 +617,6 @@
           <Property Type="String" Name="Flight_Status" Nullable="false" MaxLength="30" />
           <Property Type="Int32" Name="Cost_Eco" Nullable="false" />
           <Property Type="Int32" Name="Cost_Business" Nullable="false" />
-          <Property Type="Int32" Name="Seats_Available_Eco" Nullable="true" />
-          <Property Type="Int32" Name="Seats_Available_Business" Nullable="true" />
           <Property Type="String" Name="Seats" Nullable="true" MaxLength="8000" />
         </ComplexType>
         <ComplexType Name="sp_GetIdByEmail_Result">
@@ -693,8 +701,6 @@
                 <ScalarProperty Name="Flight_Status" ColumnName="Flight_Status" />
                 <ScalarProperty Name="Cost_Eco" ColumnName="Cost_Eco" />
                 <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
-                <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
-                <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
                 <ScalarProperty Name="Seats" ColumnName="Seats" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -820,8 +826,6 @@
                 <ScalarProperty Name="Flight_Status" ColumnName="Flight_Status" />
                 <ScalarProperty Name="Cost_Eco" ColumnName="Cost_Eco" />
                 <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
-                <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
-                <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
                 <ScalarProperty Name="Seats" ColumnName="Seats" />
               </ComplexTypeMapping>
             </ResultMapping>
@@ -840,8 +844,6 @@
                 <ScalarProperty Name="Flight_Status" ColumnName="Flight_Status" />
                 <ScalarProperty Name="Cost_Eco" ColumnName="Cost_Eco" />
                 <ScalarProperty Name="Cost_Business" ColumnName="Cost_Business" />
-                <ScalarProperty Name="Seats_Available_Eco" ColumnName="Seats_Available_Eco" />
-                <ScalarProperty Name="Seats_Available_Business" ColumnName="Seats_Available_Business" />
                 <ScalarProperty Name="Seats" ColumnName="Seats" />
               </ComplexTypeMapping>
             </ResultMapping>
@@ -878,6 +880,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_GetSeatsByFlightNo" FunctionName="AirlineDBModel.Store.sp_GetSeatsByFlightNo" />
+          <FunctionImportMapping FunctionImportName="sp_InsertCardDetails" FunctionName="AirlineDBModel.Store.sp_InsertCardDetails" />
           <FunctionImportMapping FunctionImportName="sp_UpdatePassword" FunctionName="AirlineDBModel.Store.sp_UpdatePassword" />
           <FunctionImportMapping FunctionImportName="sp_UpdateSeats" FunctionName="AirlineDBModel.Store.sp_UpdateSeats" />
         </EntityContainerMapping>

@@ -50,30 +50,30 @@ namespace WebAPI_AirlineReservation.Controllers
 
         //------------------------------------------------------------------------------------//
 
-        [Route("api/Booking/GetFlights/{Flight_Name}/{Flight_Date}/{Origin}/{Destination}/")]
-        [HttpGet]
-        public IEnumerable<Flight_Schedules> Get(string Flight_Name, DateTime Flight_Date, string Origin, string Destination)
-        {
-            //string result = "";
-            //try
-            //{
+        //[Route("api/Booking/GetFlights/{Flight_Name}/{Flight_Date}/{Origin}/{Destination}/")]
+        //[HttpGet]
+        //public IEnumerable<Flight_Schedules> Get(string Flight_Name, DateTime Flight_Date, string Origin, string Destination)
+        //{
+        //    //string result = "";
+        //    //try
+        //    //{
 
-            var data = db.Flight_Schedules.Where(x => x.Flight_Name == Flight_Name && x.Flight_Date == Flight_Date && x.Origin == Origin && x.Destination == Destination).ToList();
-            //if (data.Count() == 0)
-            //{
-            //result = "NO Flight for entered Parameters";
-            return data;
-            //}
+        //    var data = db.Flight_Schedules.Where(x => x.Flight_Name == Flight_Name && x.Flight_Date == Flight_Date && x.Origin == Origin && x.Destination == Destination).ToList();
+        //    //if (data.Count() == 0)
+        //    //{
+        //    //result = "NO Flight for entered Parameters";
+        //    return data;
+        //    //}
 
 
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-            //return result;
-        }
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    throw ex;
+        //    //}
+        //    //return result;
+        //}
 
 
         [Route("api/Booking/GetFlights1/{Flight_Name}/{Flight_Date}/{Origin}/{Destination}/")]
@@ -150,26 +150,26 @@ namespace WebAPI_AirlineReservation.Controllers
             return false;
         }
 
-        [Route("api/Booking/InsertPaymentDetails")]
-        [HttpPost]
-        public bool Post([FromBody] Payment_Details pay)
-        {
+        //[Route("api/Booking/InsertPaymentDetails")]
+        //[HttpPost]
+        //public bool Post([FromBody] Payment_Details pay)
+        //{
             
-            try
-            {
-                db.Payment_Details.Add(pay);
-                var res = db.SaveChanges();
-                if (res > 0)
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return false;
-        }
+        //    try
+        //    {
+        //        db.Payment_Details.Add(pay);
+        //        var res = db.SaveChanges();
+        //        if (res > 0)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    return false;
+        //}
 
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
